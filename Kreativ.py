@@ -111,6 +111,7 @@ class MainWindow(qtw.QWidget):
                 if not new_row.get('Hours'):
                     self.notify_lbl.setStyleSheet('color: red')
                     self.notify_lbl.setText('No need to add 0 hours.')
+                    return
                 else:
                     self.df.loc[(self.df.Date == new_row.get('Date')),'Hours'] = new_row.get('Hours') + old_hours
                     self.notify_lbl.setStyleSheet('color: green')
@@ -127,6 +128,9 @@ class MainWindow(qtw.QWidget):
             self.df.loc[len(self.df.index)] = new_row
             self.notify_lbl.setStyleSheet('color: green')
             self.notify_lbl.setText('Hours recorded.')
+        
+        # Write the file
+        self.df = self.df.sort_values(by='Date', ascending=True)
         self.df.to_csv(FILENAME, index=False)
         
     def add_hours(self, the_date, the_hours):
