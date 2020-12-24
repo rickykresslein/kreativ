@@ -12,15 +12,16 @@ FILENAME = 'creative_hours.csv'
 
 class MainWindow(qtw.QWidget):
     def __init__(self):
-        super().__init__()
+        qtw.QWidget.__init__(self)
         self.setWindowTitle('Kreativ')
+        
         self.setLayout(qtw.QVBoxLayout())
         
         self.file_empty = False
         self.df = pd.DataFrame([], columns=['Date', 'Hours'])
         self.today = date.today()
         
-        self.build_gui()
+        self.build_gui()        
         self.read_csv(launch=True)
         
         self.show()
@@ -29,11 +30,28 @@ class MainWindow(qtw.QWidget):
         container = qtw.QWidget()
         container.setLayout(qtw.QGridLayout())
         
+        # Create Menu Bar
+        menu_bar = qtw.QMenuBar()
+        # action_file = menu_bar.addMenu("File")
+        #action_file.addAction("Reload File")
+        #action_file.triggered.connect(self.read_csv)
+
+        # Create Reload File menu button
+        reload_action = qtw.QAction(self)
+        reload_action.setText('Reload File')
+        reload_action.setShortcut('Ctrl+R')
+        reload_action.setStatusTip('Reload Hours CSV')
+        reload_action.triggered.connect(lambda:self.read_csv(reloaded=True))
+        
+        # Create File Menu
+        # container.layout().addWidget(menu_bar,0,0)
+        file_menu = menu_bar.addMenu("File")
+        file_menu.addAction(reload_action)
+        
         # Create radio button group
         calc_button_group = qtw.QButtonGroup()
         
         # Fields
-        kreativ_lbl = qtw.QLabel('Kreativ')
         date_field = qtw.QDateEdit()
         date_field.setDisplayFormat("MM/dd/yyyy")
         date_field.setDate(self.today)
@@ -59,7 +77,7 @@ class MainWindow(qtw.QWidget):
         btn_calc = qtw.QPushButton('Calculate', clicked = lambda:self.calc_hours(calc_button_group.checkedId()))
         
         # Add elements to layout
-        container.layout().addWidget(kreativ_lbl,0,0,1,2)
+        container.layout().addWidget(menu_bar,0,0,1,1)
         container.layout().addWidget(date_field,1,0,1,1)
         container.layout().addWidget(date_inst,1,1,1,1)
         container.layout().addWidget(hours_field,2,0,1,1)
@@ -75,13 +93,16 @@ class MainWindow(qtw.QWidget):
         container.layout().addWidget(btn_calc,12,0,1,2)
         self.layout().addWidget(container)
         
-    def read_csv(self,launch=False):
+    def read_csv(self,launch=False,reloaded=False):
         self.file_empty = False
         try:
             self.df = pd.read_csv(FILENAME)
             if launch:
                 self.notify_lbl.setStyleSheet('color: green')
                 self.notify_lbl.setText('Hours file found and loaded.')
+            elif reloaded:
+                self.notify_lbl.setStyleSheet('color: green')
+                self.notify_lbl.setText('Reloaded hours file.')
             # Add years to combo box
             self.find_listed_years()
         except FileNotFoundError:
@@ -136,13 +157,12 @@ class MainWindow(qtw.QWidget):
     def add_hours(self, the_date, the_hours):
         new_row = {'Date':the_date, 'Hours':the_hours}
         self.write_csv(new_row)
+        # Read the file again to get any changes
+        self.read_csv()
         
     def calc_hours(self, sel_rad):
         hours_msg = qtw.QMessageBox()
         hours_msg.setIcon(qtw.QMessageBox.Information)
-        
-        # Read the file again to get any changes
-        self.read_csv()
         
         # Make sure the whole file is not empty
         if not self.file_empty:
@@ -205,7 +225,7 @@ class MainWindow(qtw.QWidget):
             self.notify_lbl.setText(f'{self.format_number(total_hours)} creative hours in the past {num_days} days.')
         else:
             self.notify_lbl.setStyleSheet('color: red')
-            self.notify_lbl.setText('No hours recorded in the last num_days days.')
+            self.notify_lbl.setText(f'No hours recorded in the last {num_days} days.')
     
     def find_listed_years(self):
         all_values = self.df.Date.values
@@ -214,6 +234,7 @@ class MainWindow(qtw.QWidget):
             all_years.append(all_values[i][0:4])
         unq_years = list(set(all_years))
         unq_years.sort(reverse=True)
+        self.year_combo.clear()
         self.year_combo.addItems(unq_years)
     
     @staticmethod
@@ -223,7 +244,7 @@ class MainWindow(qtw.QWidget):
         else:
             return num
 
-
-app = qtw.QApplication([])
-mw = MainWindow()
-app.exec_()
+if __name__ == '__main__':
+    app = qtw.QApplication([])
+    mw = MainWindow()
+    app.exec_()
