@@ -19,7 +19,7 @@ Kreativ was built on 100% Python using PyQt5.
 This project is licensed under the GNU General Public License v3.0. See the [LICENSE.md](LICENSE.md) file for details.
 
 ### Author
-This project is created and maintained by Ricky Kresslein. 
+This project is created and maintained by [Ricky Kresslein](httsp://kressle.in). 
 
 ### Acknowledgements
 Thank you to [Jim Collins](https://www.jimcollins.com/) and [Tim Ferriss](https://tim.blog) for the great podcast interview that provided the inspiration for this project.
