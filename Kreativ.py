@@ -54,6 +54,11 @@ class MainWindow(qtw.QMainWindow):
         reload_action.setStatusTip('Reload Hours CSV')
         reload_action.triggered.connect(lambda:self.read_csv(reloaded=True))
         file_menu.addAction(reload_action)
+
+        # Create backup File menu action
+        backup_action = file_menu.addAction('Create Backup', self.backup_file)
+        backup_action.setShortcut('Ctrl+B')
+        backup_action.setStatusTip('Create a backup of creative_hours.csv')
         
         # Create radio button group
         calc_button_group = qtw.QButtonGroup()
@@ -64,8 +69,10 @@ class MainWindow(qtw.QMainWindow):
         date_field.setDate(self.today)
         date_field.setMinimumDate(datetime(1900, 1, 1))
         date_field.setMaximumDate(self.today)
+        date_field.setCalendarPopup(True)
         date_inst = qtw.QLabel('Date to alter')
         hours_field = qtw.QDoubleSpinBox()
+        hours_field.setSingleStep(0.25)
         hours_inst = qtw.QLabel('# of creative hours')
         btn_submit = qtw.QPushButton('Submit', clicked = lambda:self.add_hours(date_field.date().toString('yyyy-MM-dd'), hours_field.value()))
         self.notify_lbl = qtw.QLabel('')
@@ -105,7 +112,6 @@ class MainWindow(qtw.QMainWindow):
         try:
             self.df = pd.read_csv(FILEPATH)
             if launch:
-                print(FILEPATH)
                 self.notify_lbl.setStyleSheet('color: green')
                 self.notify_lbl.setText('Hours file found and loaded.')
             elif reloaded:
@@ -244,6 +250,13 @@ class MainWindow(qtw.QMainWindow):
         unq_years.sort(reverse=True)
         self.year_combo.clear()
         self.year_combo.addItems(unq_years)
+
+    def backup_file(self):
+        backup_filename = os.path.join(FILEDIR, 'creative_hours.bak')
+        self.notify_lbl.setStyleSheet('color: green')
+        self.notify_lbl.setText(f'Backup created: ~/Documents/Kreativ/creative_hours.bak')
+        self.df = self.df.sort_values(by='Date', ascending=True)
+        self.df.to_csv(backup_filename, index=False)
     
     @staticmethod
     def format_number(num):
