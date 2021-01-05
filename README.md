@@ -8,7 +8,11 @@ After listening to an interview with Jim Collins on The Tim Ferris Show podcast 
 You can download the binaries for Linux, Windows, and Mac on my website, [https://kressle.in/kreativ](https://kressle.in/kreativ), or you can download the source here to compile it yourself.
 
 ## Use
-The program is self-explanatory.
+The program allows you to set a date and input a number of hours. When you click submit, those hours will be stored together with the date in a CSV file. The default location of the file is ~/Documents/Kreativ/creative_hours.csv. You can edit this file using a spreadsheet editor, or through Kreativ alone.
+
+If you enter hours for a date that already exists, Kreativ will ask if you wish to replace the hours for that date or add to them. There is no way to remove hours for a selected date at this time, besides opening the CSV file in a spreadsheet editor and doing it manually, or by setting the date to 0 creative hours through Kreativ.
+
+The bottom section of the app is for tracking stored hours. There you can see how many creative hours you had today, yesterday, in the past 30, 90, or 180 days, in the past year, or in a selected year.
 
 ## Project Details
 
