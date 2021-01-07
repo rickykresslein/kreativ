@@ -23,9 +23,7 @@ class MainWindow(qtw.QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle('Kreativ')
-        # icon2 = qtg.QIcon()
-        self.setWindowIcon(qtg.QIcon(os.path.join(os.path.expanduser('~'),'projects/Kreativ/images/icon.ico')))
-        # self.setWindowIcon(icon2)
+        self.setWindowIcon(qtg.QIcon('Kreativ.ico'))
         self.main_layout = qtw.QWidget()
         self.setCentralWidget(self.main_layout)
         self.main_layout.setLayout(qtw.QVBoxLayout())
