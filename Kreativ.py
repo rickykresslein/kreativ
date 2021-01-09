@@ -58,8 +58,8 @@ class MainWindow(qtw.QMainWindow):
         backup_action.setShortcut('Ctrl+B')
         backup_action.setStatusTip('Create a backup of creative_hours.csv')
 
-        # Create quite file menu action
-        quit_action = file_menu.addAction('Quit', self.destroy)
+        # Create quit file menu action
+        quit_action = file_menu.addAction('Quit', qtw.QApplication.quit, qtg.QKeySequence.Quit)
         
         # Create radio button group
         calc_button_group = qtw.QButtonGroup()
