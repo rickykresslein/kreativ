@@ -1,6 +1,10 @@
 # Kreativ
 Kreativ edits and tracks your creative hours.
 
+<p float="left">
+    <img src="https://github.com/rickykresslein/kreativ/raw/main/screenshots/kreativ.png" alt="Kreativ screenshot" width="250"/>
+</p>
+
 ## More info...
 After listening to an interview with [Jim Collins on The Tim Ferris Show](https://tim.blog/2019/02/18/jim-collins/) podcast, I started tracking the hours I spent doing creative activities every day. In the interview, Jim says your past 365 days should always be over 1,000 hours. You can use the past 90 and 180 days as a marker to help keep you on track for this goal. I'm not great with spreadsheets, so I wanted a program that would track these hours for me. I created Kreativ, and with it you can add or change hours to new or existing days and easily calculate how many hours are in the past day, month, 90 days, 180 days, year, or any given year.
 
